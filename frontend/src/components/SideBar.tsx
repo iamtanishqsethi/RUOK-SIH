@@ -16,6 +16,10 @@ import {Card} from "@/components/ui/card.tsx";
 import { InteractiveHoverButton } from "./magicui/interactive-hover-button";
 import {removeUser} from "@/utils/slice/userSlice.ts";
 
+import Navbar from "@/components/NavBar.tsx";
+
+
+
 
 export function SideBar() {
 
@@ -85,6 +89,7 @@ export function SideBar() {
                 "h-screen relative"
             )}
         >
+
             <Sidebar open={open} setOpen={setOpen}>
                 <SidebarBody className="justify-between gap-10 border-2 font-secondary">
                     <div className="flex flex-1 flex-col overflow-x-hidden overflow-y-auto">
@@ -156,6 +161,7 @@ export function SideBar() {
             )
 
             }
+            <Navbar/>
             <Outlet/>
         </div>
     )
