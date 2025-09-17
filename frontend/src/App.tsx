@@ -7,6 +7,7 @@ import Dashboard from "@/components/Dashboard/Dashboard.tsx";
 import CheckIn from "@/components/Checkin/CheckIn.tsx";
 import ToolsPage from "@/components/Tools/ToolsPage.tsx";
 import AiDashBoard from "@/components/AiDash/AiDashBoard.tsx";
+import GHQForm from "./components/GHQForm";
 import Chat from "@/components/Chat/Chat.tsx";
 import {Provider} from "react-redux";
 import appStore from "@/utils/appStore.ts";
@@ -66,6 +67,10 @@ function App() {
                             element:<ProtectedRoute><Profile/></ProtectedRoute>
                         },
                         {
+                            path:'ghq',
+                            element:<ProtectedRoute><GHQForm/></ProtectedRoute>
+                        },
+                      {
                             path:'forum',
                             element:<ProtectedRoute><RedditClone/></ProtectedRoute>
                         }
