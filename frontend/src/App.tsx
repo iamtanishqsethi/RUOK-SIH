@@ -16,6 +16,7 @@ import {SideBar} from "@/components/SideBar.tsx";
 import Profile from "@/components/Profile/Profile.tsx";
 import About from "@/components/About/About.tsx";
 import { Analytics } from '@vercel/analytics/react';
+import RedditClone from "@/components/Forum/RedditClone.tsx";
 
 function App() {
   
@@ -63,7 +64,12 @@ function App() {
                         {
                             path:'profile',
                             element:<ProtectedRoute><Profile/></ProtectedRoute>
+                        },
+                        {
+                            path:'forum',
+                            element:<ProtectedRoute><RedditClone/></ProtectedRoute>
                         }
+
                     ]
                 }
 
