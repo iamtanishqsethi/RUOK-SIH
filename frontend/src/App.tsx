@@ -18,6 +18,7 @@ import Profile from "@/components/Profile/Profile.tsx";
 import About from "@/components/About/About.tsx";
 import { Analytics } from '@vercel/analytics/react';
 import RedditClone from "@/components/Forum/RedditClone.tsx";
+import BookingPage from "./components/booking/BookingPage";
 
 function App() {
   
@@ -73,6 +74,10 @@ function App() {
                       {
                             path:'forum',
                             element:<ProtectedRoute><RedditClone/></ProtectedRoute>
+                        },
+                        {
+                            path:'book',
+                            element:<ProtectedRoute><BookingPage/></ProtectedRoute>
                         }
 
                     ]

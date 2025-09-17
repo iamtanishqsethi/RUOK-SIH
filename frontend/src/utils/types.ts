@@ -75,3 +75,12 @@ export interface Feedback {
     rating: number;
     checkIn: CheckIn;
 }
+export interface ITherapist {
+    _id: string;
+    name: string;
+    email: string;
+    photoUrl?: string | null;
+    avatar?: string | null; 
+    specialization?: string | null;
+    bio?: string | null;
+  }
