@@ -11,6 +11,7 @@ import PeopleTagRouter from './routes/PeopleTag';
 import CheckinRouter from './routes/CheckIn';
 import ProfileRouter from './routes/Profile';
 import FeedbackRouter from './routes/Feedback';
+import bookingRoutes from './routes/Booking';
 
 app.use(cors({
     origin:['http://localhost:5173','https://ru-ok.vercel.app'],
@@ -29,6 +30,7 @@ app.use('/api/activityTag',ActivityTagRouter)
 app.use('/api/peopleTag',PeopleTagRouter)
 app.use('/api/profile',ProfileRouter)
 app.use('/api/feedback',FeedbackRouter)
+app.use('/api', bookingRoutes)
 
 connectDb().then(()=>{
     console.log("connected to database")
