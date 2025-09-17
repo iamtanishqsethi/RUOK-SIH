@@ -18,6 +18,7 @@ import Profile from "@/components/Profile/Profile.tsx";
 import About from "@/components/About/About.tsx";
 import { Analytics } from '@vercel/analytics/react';
 import RedditClone from "@/components/Forum/RedditClone.tsx";
+import AdminDashboard from "@/components/Admin/Admin.tsx";
 
 function App() {
   
@@ -38,7 +39,12 @@ function App() {
                 {
                     path:'login',
                     element:<Login/>
-                },{
+                },
+                {
+                    path:'admin',
+                    element:<ProtectedRoute><AdminDashboard/></ProtectedRoute>
+                }
+                ,{
                     path:"main",
                     element:<ProtectedRoute><SideBar/></ProtectedRoute>,
                     children:[
@@ -73,7 +79,8 @@ function App() {
                       {
                             path:'forum',
                             element:<ProtectedRoute><RedditClone/></ProtectedRoute>
-                        }
+                        },
+
 
                     ]
                 }
