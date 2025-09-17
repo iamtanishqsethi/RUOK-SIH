@@ -175,7 +175,7 @@ const AiDashBoard = () => {
                             className="w-8 h-8 rounded-full bg-black dark:bg-white flex items-center justify-center flex-shrink-0 m-2">
                             <Sparkles className="h-5 w-5 text-white dark:text-black"/>
                         </div>
-                        <div className="max-w-xs px-4 py-2.5 rounded-2xl text-white bg-blue-500/10 text-blue-100 backdrop-blur-xl border border-blue-300/20 rounded-bl-none shadow-sm">
+                        <div className="max-w-xs px-4 py-2.5 rounded-2xl text-white bg-blue-500/10  backdrop-blur-xl border border-blue-300/20 rounded-bl-none shadow-sm">
                             <div className="flex items-center gap-1">
                                 <div className="w-2 h-2 bg-zinc-400 rounded-full animate-bounce"
                                      style={{animationDelay: "0s"}}></div>
@@ -203,7 +203,7 @@ const AiDashBoard = () => {
             </div>
 
             {/* Input Area */}
-            <div className="border-zinc-200 dark:border-zinc-700 relative z-10">
+            <div className="border-zinc-200 dark:border-zinc-700 relative z-10 mb-16 md:mb-0">
                 <div className="w-full">
                     {!isGuest ? (
                         <div
