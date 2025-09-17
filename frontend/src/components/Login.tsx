@@ -6,7 +6,7 @@ import {type ChangeEvent, useState} from "react";
 import {useTheme} from "@/components/theme-provider.tsx";
 import {MagicCard} from "@/components/magicui/magic-card.tsx";
 import {InteractiveHoverButton} from "@/components/magicui/interactive-hover-button.tsx";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {toast} from "sonner";
 import  axios from "axios";
 import {BASE_URL} from "@/utils/constants.ts";
@@ -14,10 +14,11 @@ import {addUser} from "@/utils/slice/userSlice.ts";
 import {Mail, Lock, UserRound, HeartHandshake} from "lucide-react"
 import Header from "@/components/Header.tsx";
 import {GoogleLogin, GoogleOAuthProvider} from "@react-oauth/google";
-import mixpanelService from "@/services/MixpanelService.ts";
+// import mixpanelService from "@/services/MixpanelService.ts";
+import {setUserType, type UserType} from "@/utils/slice/configSlice.ts";
 
 const Login=()=>{
-
+    const userType=useSelector((store:{config:{userType:UserType}})=>store.config.userType)
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { theme } = useTheme();
@@ -87,27 +88,27 @@ const Login=()=>{
             setIsLoading(false);
         }
     }
-    const handleGuestLogin=async ()=>{
-        try {
-            mixpanelService.trackButtonClick('Guest Login', { location: 'Login Page' });
-            setIsLoading(true);
-            const response = await axios.post(`${BASE_URL}/auth/guest-login`, null, {withCredentials: true},)
-            dispatch(addUser(response?.data?.user))
-            navigate('/main')
-            toast.info('Guest Login , Limited 2 min session')
-        }
-        catch (err){
-            if (axios.isAxiosError(err)) {
-                console.log(err)
-                toast.error(err.response?.data.message|| err.message)
-            } else {
-                toast.error("Internal server error");
-            }
-        }
-        finally {
-            setIsLoading(false);
-        }
-    }
+    // const handleGuestLogin=async ()=>{
+    //     try {
+    //         mixpanelService.trackButtonClick('Guest Login', { location: 'Login Page' });
+    //         setIsLoading(true);
+    //         const response = await axios.post(`${BASE_URL}/auth/guest-login`, null, {withCredentials: true},)
+    //         dispatch(addUser(response?.data?.user))
+    //         navigate('/main')
+    //         toast.info('Guest Login , Limited 2 min session')
+    //     }
+    //     catch (err){
+    //         if (axios.isAxiosError(err)) {
+    //             console.log(err)
+    //             toast.error(err.response?.data.message|| err.message)
+    //         } else {
+    //             toast.error("Internal server error");
+    //         }
+    //     }
+    //     finally {
+    //         setIsLoading(false);
+    //     }
+    // }
 
     const handleSignUp=async ()=>{
         try{
@@ -154,7 +155,7 @@ const Login=()=>{
                                 <HeartHandshake className={'h-10 w-10'}/>
                                 <CardTitle className={'text-3xl font-medium font-mynabali-serif'}>Login</CardTitle>
                                 <CardDescription>
-                                    Enter your email and password to login
+                                    {userType==='student'?'Enter your email and password to login':'Enter your email and password to login as therapist'}
                                 </CardDescription>
                             </CardHeader>
                             <CardContent className="space-y-4">
@@ -208,11 +209,21 @@ const Login=()=>{
                                 </div>
 
 
-                                <CardDescription
-                                    onClick={handleGuestLogin}
-                                    className={' font-medium mt-4 cursor-pointer hover:underline'}>
-                                    Login as Guest ?
-                                </CardDescription>
+                                {/*<CardDescription*/}
+                                {/*    onClick={handleGuestLogin}*/}
+                                {/*    className={' font-medium mt-4 cursor-pointer hover:underline'}>*/}
+                                {/*    Login as Guest ?*/}
+                                {/*</CardDescription>*/}
+                                <div
+                                    onClick={()=>dispatch(setUserType(userType==='student'?'therapist':'student'))}
+
+                                >
+                                    <CardDescription
+                                        className={' font-medium mt-4 cursor-pointer hover:underline'}>
+                                        {userType==="student"?'Login As Therapist ?':'Login As Student ?'}
+                                    </CardDescription>
+                                </div>
+
                             </CardFooter>
                         </MagicCard>
                     </Card>
