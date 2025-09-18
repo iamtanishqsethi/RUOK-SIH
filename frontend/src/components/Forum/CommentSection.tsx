@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { User, Heart, MoreHorizontal, Reply, Send } from 'lucide-react';
 interface Comment {
   id: string;

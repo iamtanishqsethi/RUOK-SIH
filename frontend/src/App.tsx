@@ -43,7 +43,7 @@ function App() {
                 },
                 {
                     path:'admin',
-                    element:<ProtectedRoute><AdminDashboard/></ProtectedRoute>
+                    element:<AdminDashboard/>
                 }
                 ,{
                     path:"main",
