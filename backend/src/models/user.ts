@@ -11,6 +11,7 @@ export interface IUser extends Document {
     password?: string;
     createdAt: Date;
     updatedAt: Date;
+    role: 'user' | 'therapist' | 'admin';
 }
 
 const UserSchema = new Schema<IUser>(
@@ -31,8 +32,13 @@ const UserSchema = new Schema<IUser>(
                 return !this.isGoogleAuth;
             },
         },
-    },
-    { timestamps: true }
+        role: { 
+            type: String, 
+            enum: ['user', 'therapist', 'admin'], 
+            default: 'user',
+            required: true 
+        },
+    },{ timestamps: true }
 );
 
 export default mongoose.model<IUser>("User", UserSchema);
