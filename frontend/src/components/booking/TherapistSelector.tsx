@@ -1,7 +1,7 @@
 import React from 'react';
 import TherapistCard from './TherapistCard';
 import { ScrollArea } from '../ui/scroll-area';
-import type { ITherapist } from '../../utils/types';
+import type { ITherapist } from '@/utils/types.ts';
 
 interface TherapistSelectorProps {
   therapists: ITherapist[];

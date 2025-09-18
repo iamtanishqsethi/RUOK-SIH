@@ -47,7 +47,7 @@ const BookingPage = () => {
   const [selectedTherapistId, setSelectedTherapistId] = useState<string | null>(null);
   const [selectedDate, setSelectedDate] = useState<number>(6); 
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
 
   const timeSlots = generateTimeSlots(9, 18); 
 
@@ -122,7 +122,7 @@ const BookingPage = () => {
   return (
     <div className="min-h-screen bg-black text-white flex items-center justify-center p-6 max-w-6xl w-full mx-auto">
       <div className="">
-        <h1 className="text-3xl font-bold mb-8 text-center">Book a therapist</h1>
+        <h1 className="text-4xl font-bold mb-8 text-center font-mynabali-serif">Book a therapist</h1>
 
         <div className="grid grid-cols-3 gap-6">
           <div className="space-y-6">
