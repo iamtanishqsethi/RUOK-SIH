@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Phone, MessageSquare, Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Modal, ModalBody, ModalContent, ModalTrigger} from '../ui/animated-modal';
+import {InteractiveHoverButton} from "@/components/magicui/interactive-hover-button.tsx";
+import {useNavigate} from "react-router-dom";
 
 const mockTherapists = [
   {
@@ -118,7 +121,7 @@ const BookingPage = () => {
   };
 
   const bookedSlots = mockedBookedSlotsForDate(selectedTherapistId ?? '', selectedDate);
-
+  const navigate=useNavigate();
   return (
     <div className="min-h-screen bg-black text-white flex items-center justify-center p-6 max-w-6xl w-full mx-auto">
       <div className="">
@@ -190,7 +193,7 @@ const BookingPage = () => {
               {renderCalendar()}
             </div>
 
-            <div className="flex justify-center gap-4 mt-6">
+            <div className="flex justify-center gap-6 mt-6">
               <button
                 onClick={handleDiscard}
                 className="px-8 py-2.5 bg-neutral-600 hover:bg-neutral-500 text-white rounded-full transition-colors"
@@ -204,6 +207,24 @@ const BookingPage = () => {
                 Book
               </button>
             </div>
+
+            <Modal>
+              <ModalTrigger className="bg-black dark:bg-white dark:text-black text-white flex justify-center group/modal-btn m-5">
+                  Take Assessment
+              </ModalTrigger>
+              <ModalBody>
+                <ModalContent className={'flex flex-col items-center justify-center gap-4 text-center'}>
+                  <h1 className="font-mynabali-serif text-4xl my-4 font-medium"> GHQ Assessment Required</h1>
+                  <p className="text-center px-10 font-secondary text-lg text-zinc-700 dark:text-zinc-400">Before booking, please complete our General Health Questionnaire.
+                    This assessment helps your therapist understand you better and provide personalized care.
+                  </p>
+                  <InteractiveHoverButton onClick={()=>navigate('/main/ghq')}>
+                    Take Assessment
+                  </InteractiveHoverButton>
+                </ModalContent>
+
+              </ModalBody>
+            </Modal>
           </div>
 
           <div className="bg-[#1A1A1A] rounded-2xl p-6 border border-neutral-800">

@@ -12,6 +12,8 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { ChevronLeft, ChevronRight, User, FileText, Send, Heart } from 'lucide-react';
+import {InteractiveHoverButton} from "@/components/magicui/interactive-hover-button.tsx";
+import {useNavigate} from "react-router-dom";
 
 // Official GHQ-12 Questions
 const ghqQuestions = [
@@ -205,6 +207,9 @@ const QuestionCard: React.FC<{
 const GHQForm: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const totalSteps = 14;
+  const [resultMessage, setResultMessage] = useState('');
+  const [isCompleted, setIsCompleted] = useState(false);
+  const navigate=useNavigate();
 
   const form = useForm<GHQFormValues>({
     resolver: joiResolver(ghqFormSchema),
@@ -236,22 +241,25 @@ const GHQForm: React.FC = () => {
 
   const onSubmit = async (values: GHQFormValues) => {
     const scores = calculateGHQScore(values);
-    
-    const resultMessage = `🎉 GHQ-12 Assessment Completed Successfully!
 
-📊 Your Mental Health Scores:
-• Bimodal Score: ${scores.bimodalScore}/12
-• Likert Score: ${scores.likertScore}/36
+    const resultMessage = `
+🎉 GHQ-12 Assessment Completed Successfully!<br/><br/>
 
-📝 Clinical Interpretation:
-• Bimodal scores ≥3 may indicate psychological distress
-• Likert scores ≥12 may indicate psychological distress
+📊 <strong>Your Mental Health Scores:</strong><br/>
+• Bimodal Score: ${scores.bimodalScore}/12<br/>
+• Likert Score: ${scores.likertScore}/36<br/><br/>
 
-💡 Note: This is a screening tool only. For clinical concerns, please consult a healthcare professional.
+📝 <strong>Clinical Interpretation:</strong><br/>
+• Bimodal scores ≥3 may indicate psychological distress<br/>
+• Likert scores ≥12 may indicate psychological distress<br/><br/>
 
-Thank you for taking the time to complete this assessment.`;
+💡 <em>Note:</em> This is a screening tool only. For clinical concerns, please consult a healthcare professional.<br/><br/>
 
-    alert(resultMessage);
+Thank you for taking the time to complete this assessment.
+`;
+
+    setResultMessage(resultMessage);
+    setIsCompleted(true);
     form.reset();
     setCurrentStep(0);
   };
@@ -480,8 +488,25 @@ Thank you for taking the time to complete this assessment.`;
   };
 
   return (
-    <div className="h-screen w-full bg-background flex flex-col overflow-hidden">
+    <div className="h-screen w-full bg-background flex flex-col overflow-hidden relative">
       {/* Header */}
+      {isCompleted && <div
+          className="absolute z-20 bg-zinc-500/60 dark:bg-zinc-900/60 backdrop-blur-sm h-screen w-full flex flex-col items-center justify-center">
+        <Card
+            className="w-[20rem] md:w-[45rem] h-[38rem] bg-zinc-100 dark:bg-zinc-950 overflow-hidden border-3 flex flex-col items-center justify-center">
+          <h1 className="font-mynabali text-3xl md:text-5xl my-4 font-medium">
+            RuOk
+          </h1>
+          <p dangerouslySetInnerHTML={{ __html: resultMessage }}  className={'px-4'} />
+
+          <InteractiveHoverButton
+              className="text-lg"
+              onClick={()=>navigate('/main/book')}
+          >
+            Book Session
+          </InteractiveHoverButton>
+        </Card>
+      </div>}
       <div className="bg-card border-b border-border flex-shrink-0">
         <div className="px-4 lg:px-6">
           <div className="flex justify-between items-center py-4">
@@ -554,7 +579,7 @@ Thank you for taking the time to complete this assessment.`;
                 type="button"
                 onClick={form.handleSubmit(onSubmit)}
                 disabled={form.formState.isSubmitting}
-                className="flex items-center gap-2 px-6 py-2 h-10 bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 transition-all hover:shadow-md disabled:opacity-50"
+                className="flex items-center gap-2 px-6 py-2 h-10  transition-all hover:shadow-md disabled:opacity-50"
               >
                 {form.formState.isSubmitting ? (
                   <>
