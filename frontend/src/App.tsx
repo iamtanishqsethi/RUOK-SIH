@@ -6,7 +6,7 @@ import Login from "@/components/Login.tsx";
 import Dashboard from "@/components/Dashboard/Dashboard.tsx";
 import CheckIn from "@/components/Checkin/CheckIn.tsx";
 import ToolsPage from "@/components/Tools/ToolsPage.tsx";
-import AiDashBoard from "@/components/AiDash/AiDashBoard.tsx";
+// import AiDashBoard from "@/components/AiDash/AiDashBoard.tsx";
 import GHQForm from "./components/GHQForm";
 import Chat from "@/components/Chat/Chat.tsx";
 import {Provider} from "react-redux";
@@ -20,6 +20,8 @@ import { Analytics } from '@vercel/analytics/react';
 import RedditClone from "@/components/Forum/RedditClone.tsx";
 import BookingPage from "./components/booking/BookingPage";
 import AdminDashboard from "@/components/Admin/Admin.tsx";
+import Main from "@/components/Sage-Avatar/Main.tsx";
+import {ChatProvider} from "@/components/Sage-Avatar/useChat.tsx";
 
 function App() {
   
@@ -63,7 +65,8 @@ function App() {
                         },
                         {
                             path:'ai',
-                            element:<ProtectedRoute><AiDashBoard/></ProtectedRoute>
+                            // element:<ProtectedRoute><AiDashBoard/></ProtectedRoute>
+                            element:<ProtectedRoute><Main/></ProtectedRoute>
                         },
                         {
                             path:'chat',
@@ -95,10 +98,13 @@ function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <Provider store={appStore}>
-            <Toaster duration={3000}/>
-            <Analytics/>
-            <RouterProvider router={appRouter}>
-            </RouterProvider>
+            <ChatProvider>
+                <Toaster duration={3000}/>
+                <Analytics/>
+                <RouterProvider router={appRouter}>
+                </RouterProvider>
+            </ChatProvider>
+
         </Provider>
     </ThemeProvider>
   )
