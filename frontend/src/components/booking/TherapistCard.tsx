@@ -1,7 +1,6 @@
 import React from 'react';
-import { Card } from '../ui/card'; // We'll style the card div directly
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
-import { cn } from '../../lib/utils';
+import { cn } from '@/lib/utils.ts';
 
 interface Therapist {
   _id: string;

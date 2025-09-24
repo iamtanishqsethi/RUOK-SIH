@@ -1,7 +1,6 @@
 import React from 'react';
 import { Calendar } from '../ui/calendar';
-import { Card } from '../ui/card';
-import { cn } from '../../lib/utils';
+import { cn } from '@/lib/utils.ts';
 import { ChevronLeft, ChevronRight } from 'lucide-react'; 
 
 interface CalendarPickerProps {
@@ -10,7 +9,7 @@ interface CalendarPickerProps {
   disabledDates?: Date[]; 
 }
 
-const CalendarPicker: React.FC<CalendarPickerProps> = ({ selectedDate, onSelectDate, disabledDates }) => {
+const CalendarPicker: React.FC<CalendarPickerProps> = ({ selectedDate, onSelectDate }) => {
   return (
     <div className="w-full">
       <h2 className="text-2xl font-bold mb-4 pt-sans-bold text-white">

@@ -1,7 +1,7 @@
 import React from 'react';
 import { ScrollArea } from '../ui/scroll-area';
 import { Button } from '../ui/button';
-import { cn } from '../../lib/utils';
+import { cn } from '@/lib/utils.ts';
 
 interface TimeSlotPickerProps {
   availableTimeSlots: string[];

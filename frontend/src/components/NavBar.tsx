@@ -52,7 +52,7 @@ export default function Navbar() {
                             </svg>
                         </PopoverTrigger>
                         <PopoverContent className={'bg-transparent border-0 flex items-center justify-center gap-4'}>
-                            <Link to={'/main/health'}>
+                            <Link to={'/main/book'}>
                                 <Button variant={'secondary'} className={'rounded-full h-12 w-12 mt-4'}>
                                     <svg width="20" height="20" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M10.6667 28V21.3333H4V10.6667H10.6667V4H21.3333V10.6667H28V21.3333H21.3333V28H10.6667ZM13.3333 25.3333H18.6667V18.6667H25.3333V13.3333H18.6667V6.66667H13.3333V13.3333H6.66667V18.6667H13.3333V25.3333Z" fill="currentColor"/>
