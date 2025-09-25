@@ -1,6 +1,10 @@
 import { useRef, type KeyboardEvent } from "react";
 import { useChat } from "./useChat";
 import {Button} from "@/components/ui/button.tsx";
+import {InteractiveHoverButton} from "@/components/magicui/interactive-hover-button.tsx";
+import { useNavigate } from "react-router-dom";
+import {CheckCircle} from "lucide-react";
+import {RainbowButton} from "@/components/magicui/rainbow-button.tsx";
 
 interface UIProps {
     hidden?: boolean;
@@ -9,8 +13,8 @@ interface UIProps {
 
 export const UI = ({ hidden = false, ...props }: UIProps) => {
     const input = useRef<HTMLInputElement>(null);
-    const { chat, loading, cameraZoomed, setCameraZoomed, message } = useChat();
-
+    const { chat, loading, cameraZoomed, setCameraZoomed, message,isGuest,hasCheckin } = useChat();
+    const navigate = useNavigate();
     const sendMessage = async () => {
         const text = input?.current?.value;
         if (!text || loading || message) return;
@@ -108,8 +112,22 @@ export const UI = ({ hidden = false, ...props }: UIProps) => {
                 </button>
             </div>
 
-            <div className="flex items-center gap-2 pointer-events-auto max-w-screen-sm w-full mx-auto mb-16">
-                <input
+            <div className="relative flex items-center gap-2 pointer-events-auto max-w-screen-sm w-full mx-auto mb-16">
+
+                {!isGuest?
+                    (<>
+                        {!hasCheckin &&
+                            <div className={'absolute -top-12 w-full flex flex-col items-center bottom-0'}>
+                                <RainbowButton
+                                    onClick={() => navigate("/main/checkin")}
+                                    className="rounded-full text-white font-secondary hover:scale-105 transition-transform ease-in-out duration-150"
+                                >
+                                    <CheckCircle/>
+                                    <span>Check In</span>
+                                </RainbowButton>
+                            </div>
+                        }
+                        <input
                     className={"file:text-foreground placeholder:text-muted-foreground selection:bg-primary " +
                         "selection:text-primary-foreground dark:bg-zinc-800/50 border-input flex h-9 w-full min-w-0 " +
                         "rounded-full border bg-transparent px-4 py-2 text-base shadow-xs transition-[color,box-shadow] " +
@@ -122,18 +140,32 @@ export const UI = ({ hidden = false, ...props }: UIProps) => {
                     onKeyDown={handleKeyDown}
                     disabled={loading}
                 />
-                <Button
+                    <Button
                     disabled={loading || !!message}
-                    onClick={sendMessage}
-                    className={` rounded-full p-6 ${
-                        loading || message
-                            ? "cursor-not-allowed opacity-30"
-                            : "hover:shadow-lg active:scale-95"
-                    }`}
-                    aria-label="Send message"
-                >
-                    {loading ? "Sending..." : "Send"}
-                </Button>
+                onClick={sendMessage}
+                className={` rounded-full p-6 ${
+                    loading || message
+                        ? "cursor-not-allowed opacity-30"
+                        : "hover:shadow-lg active:scale-95"
+                }`}
+                aria-label="Send message"
+            >
+                {loading ? "Sending..." : "Send"}
+            </Button></>)
+                    :(
+                        <div className="w-full text-center flex flex-col items-center gap-4">
+                            <div className="text-sm px-6 sm:text-base bg-zinc-300/40 dark:bg-zinc-800/40 backdrop-blur-2xl rounded-2xl w-full min-h-[5rem] flex items-center justify-center text-center text-white">
+                                Please log in or create an account to chat with Sage.
+                            </div>
+                            <InteractiveHoverButton
+                                onClick={() => navigate("/login")}
+                                className="text-sm sm:text-base font-secondary font-medium border-2 border-zinc-600 dark:border-zinc-800"
+                            >
+                                Login to Begin
+                            </InteractiveHoverButton>
+                        </div>
+                    )
+            }
             </div>
         </div>
     );

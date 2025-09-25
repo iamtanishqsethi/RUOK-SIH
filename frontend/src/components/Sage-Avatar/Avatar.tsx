@@ -129,6 +129,8 @@ export function Avatar(props:AvatarProps) {
     const [winkRight, setWinkRight] = useState(false);
     const [facialExpression, setFacialExpression] = useState<string>("");
 
+    const lastPlayedId=useRef<string|null>(null)
+
     useEffect(() => {
         if (!message) {
             setAnimation("Idle");
@@ -137,7 +139,9 @@ export function Avatar(props:AvatarProps) {
         setAnimation(message.animation);
         setFacialExpression(message.facialExpression);
         setLipsync(message.lipsync);
-        if (message.audio) {
+        if (message.audio && message.id && lastPlayedId.current !== message.id) {
+            lastPlayedId.current=message.id
+
             const audioEl = new Audio("data:audio/mp3;base64," + message.audio);
             audioEl.play().catch(console.error);
             setAudio(audioEl);
