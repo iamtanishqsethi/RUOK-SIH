@@ -1,6 +1,12 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import {createContext, useContext, useEffect, useState, type ReactNode, useRef} from "react";
+import { useGetDayCheckIn } from "@/utils/hooks/useGetDayCheckIn.ts";
+import { useSelector } from "react-redux";
+import type {Feedback, User} from "@/utils/types.ts";
+import {BASE_URL} from "@/utils/constants.ts";
+import axios from "axios";
+import {toast} from "sonner";
 
-const backendUrl = "http://localhost:3000";
+
 
 interface Message {
     id: string;
@@ -15,6 +21,7 @@ interface Message {
             value: string;
         }>;
     };
+
 }
 
 interface ChatContextType {
@@ -24,6 +31,8 @@ interface ChatContextType {
     loading: boolean;
     cameraZoomed: boolean;
     setCameraZoomed: (zoomed: boolean) => void;
+    isGuest: boolean;
+    hasCheckin: boolean|undefined;
 }
 
 interface ChatProviderProps {
@@ -38,34 +47,73 @@ export const ChatProvider = ({ children }: ChatProviderProps) => {
     const [loading, setLoading] = useState(false);
     const [cameraZoomed, setCameraZoomed] = useState(true);
 
+    const user = useSelector((state: { user: User | null }) => state.user);
+    const isGuest = !!user?.isGuest
+
+    const dayCheckIns = useGetDayCheckIn();
+    const feedbacks = useSelector((state: { feedback: Feedback[] | null }) => state.feedback || []);
+    const [chatHistory, setChatHistory] = useState<{ from: "user" | "bot"; text: string }[]>([]);
+
+    const hasCheckin = dayCheckIns && dayCheckIns.length > 0;
+
+    const hasInitiated = useRef(false)
+
+    useEffect(() => {
+        const initiateChat = async () => {
+
+            if (hasInitiated.current||isGuest || messages.length > 0) {
+                return;
+            }
+            hasInitiated.current = true;
+            setLoading(true);
+            const hasCheckIn = dayCheckIns && dayCheckIns.length > 0;
+
+
+            const initialPrompt = hasCheckIn
+                ? "INITIAL_GREETING_WITH_CHECKIN"
+                : "INITIAL_GREETING_NO_CHECKIN";
+
+
+            await chat(initialPrompt);
+            setLoading(false);
+        };
+
+        initiateChat();
+    }, [ isGuest,messages,hasCheckin]);
+
     const chat = async (messageText: string): Promise<void> => {
         if (!messageText.trim()) return;
 
         setLoading(true);
+        const newHistory:{ from: "user" | "bot"; text: string }[] = [...chatHistory, { from: "user", text: messageText }];
+        setChatHistory(newHistory);
         try {
-            const response = await fetch(`${backendUrl}/chat`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
+            const response = await axios.post(`${BASE_URL}/chat`,
+              {
+                    message: messageText,
+                    dayCheckIns,
+                    feedbacks,
+                    chatHistory: newHistory,
                 },
-                body: JSON.stringify({ message: messageText }),
-            });
+                {withCredentials: true}
+            );
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const data = await response.json();
-            const newMessages = data.messages;
+            const newMessages = response?.data?.messages;
 
             if (Array.isArray(newMessages)) {
-                setMessages((prevMessages) => [...prevMessages, ...newMessages]);
+                setMessages((prevMessages) => [...prevMessages, ...newMessages])
+                const botMessage = newMessages[0]?.text || "";
+                setChatHistory(prev => [...prev, { from: "bot", text: botMessage }]);
             } else {
                 console.error("Invalid response format: messages should be an array");
             }
         } catch (err) {
-            console.error("Error fetching chat response:", err);
-            // Optionally set an error state or show user notification
+            if (axios.isAxiosError(err)) {
+                console.log(err)
+                toast.error(err.response?.data.message|| err.message)
+            } else {
+                toast.error("Internal server error");
+            }
         } finally {
             setLoading(false);
         }
@@ -92,6 +140,8 @@ export const ChatProvider = ({ children }: ChatProviderProps) => {
                 loading,
                 cameraZoomed,
                 setCameraZoomed,
+                isGuest,
+                hasCheckin
             }}
         >
             {children}

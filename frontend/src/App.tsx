@@ -21,7 +21,7 @@ import RedditClone from "@/components/Forum/RedditClone.tsx";
 import BookingPage from "./components/booking/BookingPage";
 import AdminDashboard from "@/components/Admin/Admin.tsx";
 import Main from "@/components/Sage-Avatar/Main.tsx";
-import {ChatProvider} from "@/components/Sage-Avatar/useChat.tsx";
+
 
 function App() {
   
@@ -98,13 +98,10 @@ function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <Provider store={appStore}>
-            <ChatProvider>
                 <Toaster duration={3000}/>
                 <Analytics/>
                 <RouterProvider router={appRouter}>
                 </RouterProvider>
-            </ChatProvider>
-
         </Provider>
     </ThemeProvider>
   )

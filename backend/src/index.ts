@@ -12,6 +12,7 @@ import CheckinRouter from './routes/CheckIn';
 import ProfileRouter from './routes/Profile';
 import FeedbackRouter from './routes/Feedback';
 import bookingRoutes from './routes/Booking';
+import chatRouter from './routes/Chat';
 
 app.use(cors({
     origin:['http://localhost:5173','https://ru-ok.vercel.app','https://ruok-sih.vercel.app'],
@@ -31,6 +32,7 @@ app.use('/api/peopleTag',PeopleTagRouter)
 app.use('/api/profile',ProfileRouter)
 app.use('/api/feedback',FeedbackRouter)
 app.use('/api', bookingRoutes)
+app.use('/api/chat',chatRouter)
 
 connectDb().then(()=>{
     console.log("connected to database")
