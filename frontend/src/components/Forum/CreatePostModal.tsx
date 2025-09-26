@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ArrowLeft, User, Image, MapPin, Paperclip } from 'lucide-react';
-import { toast } from "sonner";
+import {toast} from "sonner";
+
 
 const CreatePostModal: React.FC<{
     isOpen: boolean;
@@ -12,6 +13,33 @@ const CreatePostModal: React.FC<{
     const [selectedColor, setSelectedColor] = useState('bg-gradient-to-t from-red-900');
     const [tags, setTags] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isCheckingContent, setIsCheckingContent] = useState(false);
+
+    const illegalWords = [
+        'psycho','psychopath','psycho-path','crazy','stupid','idiot','loony','loonybin','nuts','nutcase',
+        'dumb','fool','moron','imbecile','retard','retarded','lunatic','lunatics','deranged','insane','insanity',
+        'mental','maniac','weirdo','weirdos','sicko','schizo','schizophrenic','nut-job','nut-job','loony-tunes',
+
+        // Violence / self-harm
+        'kill','kill yourself','kill yourself now','kill urself','killme','kill me','killme','murder','suicide',
+        'suicidal','suicid[eal]','kms','kys','kms','killa','end it all','end my life','end my life now','take my life',
+        'i want to die','i want to kill myself','i will kill myself','i will kill myself tonight','hang myself',
+        'hang myself','hang me','cutting','cut myself','cut me','selfharm','self-harm','self harm','overdose','od',
+        'overdose on','take overdose','die','death','want to die','want to end it all','no reason to live','life not worth living',
+
+        // Harassment / dismissive
+        'worthless','pathetic','loser','trash','garbage','ugly','fat','filthy','disgusting','scum','rat','vermin',
+        'piece of shit','pos','piece of s**t','worthless piece','idiotic','idiots','moronic','stupidest','dumbass',
+        'asshole','bitch','bastard','motherfucker','mf','waste of space','get lost','damn you','die asshole','get out',
+
+        // Abbreviations / shorthand
+        'rtard','kysnow','kmsnow','endit','enditnow','imgoingtodie','im going to die','i cant go on','cant go on',
+
+        // Phrases that indicate severe harm intent
+        'i cant take this anymore','i cant do this anymore','i want to end my life','i want to end it','no reason to live',
+        'there is no point','i might kill myself','i may kill myself','thinking of killing myself','thinking about suicide'
+    ];
+
 
     const colors = [
         { name: 'Red', value: 'bg-gradient-to-t from-red-900', color: 'bg-red-500' },
@@ -20,22 +48,42 @@ const CreatePostModal: React.FC<{
         { name: 'Green', value: 'bg-gradient-to-t from-green-900', color: 'bg-green-500' }
     ];
 
+    // const communityMembers = [
+    //   { name: 'Dr. Maninder Bhatinda', email: 'maninderbhatinda@gmail.com' },
+    //   { name: 'Dr. Sarah Johnson', email: 'sarah.johnson@gmail.com' },
+    //   { name: 'Dr. Alex Chen', email: 'alex.chen@gmail.com' },
+    //   { name: 'Dr. Maria Garcia', email: 'maria.garcia@gmail.com' },
+    //   { name: 'Dr. James Wilson', email: 'james.wilson@gmail.com' }
+    // ];
+
     const handlePost = async () => {
         if (title.trim() && content.trim() && !isSubmitting) {
-            setIsSubmitting(true);
-            try {
-                const tagArray = tags.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0);
-                await onPost(title, content, selectedColor, tagArray);
-                setTitle('');
-                setContent('');
-                setTags('');
-                setSelectedColor('bg-gradient-to-t from-red-900');
-                onClose();
-            } catch (error: any) {
-                toast.warning(error.response?.data?.message || 'Failed to create post');
-            } finally {
-                setIsSubmitting(false);
+            setIsCheckingContent(true);
+            await new Promise(resolve => setTimeout(resolve, 1500));
+
+            const containsIllegalWords = illegalWords.some(word => title.toLowerCase().includes(word) || content.toLowerCase().includes(word));
+
+            if (containsIllegalWords) {
+                toast.warning('Your post contains inappropriate language and cannot be submitted.');
+                setIsCheckingContent(false);
+                return;
             }
+
+            setIsSubmitting(true);
+
+            // Simulate API call delay
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
+            const tagArray = tags.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0);
+            onPost(title, content, selectedColor, tagArray);
+
+            setTitle('');
+            setContent('');
+            setTags('');
+            setSelectedColor('bg-gradient-to-r from-red-900 to-red-700');
+            setIsSubmitting(false);
+            setIsCheckingContent(false);
+            onClose();
         }
     };
 
@@ -43,7 +91,7 @@ const CreatePostModal: React.FC<{
         setTitle('');
         setContent('');
         setTags('');
-        setSelectedColor('bg-gradient-to-t from-red-900');
+        setSelectedColor('bg-gradient-to-r from-red-900 to-red-700');
         onClose();
     };
 
@@ -90,6 +138,11 @@ const CreatePostModal: React.FC<{
                         </div>
                     </div>
 
+                    {isCheckingContent && (
+                        <div className="flex items-center justify-center p-2 bg-yellow-900/50 rounded-lg mb-4">
+                            <p className="text-yellow-300 text-sm">Checking for illegal words...</p>
+                        </div>
+                    )}
                     <input
                         type="text"
                         placeholder="Title"
