@@ -151,23 +151,41 @@ function SlideStepper({ steps, cardTitle }: SlideStepperProps) {
     const isBox = cardTitle.includes("Square") || cardTitle.includes("Box");
     const isLast = index === steps.length - 1;
 
+    const currentStep = steps[index]; // Get the current step
+
     return (
         <div className="relative w-full h-full flex flex-col">
             <div className="flex-1 flex flex-col min-h-0 px-4">
                 <div className="flex-1 flex items-center justify-center min-h-0 py-4">
                     {is478 ? <Breathing478 /> : isBox ? <BoxBreathing /> : (
-                        steps[index].image && (
-                            <img
-                                src={steps[index].image}
-                                alt={`Step ${index + 1}`}
-                                className="max-h-full max-w-full object-contain"
-                            />
+                        // Check if there's a video URL for the current step
+                        currentStep.videoUrl ? (
+                            <iframe
+                                width="560" // Adjust width as needed for responsiveness
+                                height="315" // Adjust height as needed for responsiveness
+                                src={currentStep.videoUrl}
+                                title="YouTube video player"
+                                frameBorder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                referrerPolicy="strict-origin-when-cross-origin"
+                                allowFullScreen
+                                className="max-h-full max-w-full object-contain aspect-video" // Added aspect-video for better sizing
+                            ></iframe>
+                        ) : (
+                            // Otherwise, display the image if available
+                            currentStep.image && (
+                                <img
+                                    src={currentStep.image}
+                                    alt={`Step ${index + 1}`}
+                                    className="max-h-full max-w-full object-contain"
+                                />
+                            )
                         )
                     )}
                 </div>
                 <div className="flex-shrink-0 pt-4 pb-4 lg:px-6">
                     <p className="text-center sm:text-sm md:text-xl lg:text-3xl xl:text-xl text-zinc-700 dark:text-zinc-300 pt-sans-regular text-center">
-                        {steps[index].text}
+                        {currentStep.text}
                     </p>
                 </div>
             </div>

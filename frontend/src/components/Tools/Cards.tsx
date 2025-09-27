@@ -72,6 +72,9 @@ export const cards: TechniqueCard[] = [
       afterSrc: eftafter,
       category: "High Energy Unpleasant",
       steps: [
+        { 
+          videoUrl: "https://www.youtube.com/embed/S1U3cI2QxHw?si=REZAKNEuf4eaXFsG&start=10",
+        },
         {
           text: "Identify the issue you want to address (e.g. I feel anxious).",
           image: eft1,
@@ -167,6 +170,9 @@ export const cards: TechniqueCard[] = [
       afterSrc: groundingafter,
       category: "Low Energy Unpleasant",
       steps: [
+        {
+          videoUrl: "https://www.youtube.com/embed/30VMIEmA114?si=panyySrXOmlJY7wR"
+        },
         {
           text: "Identify 5 things you can see (e.g., a lamp, your hands).",
           image: ground1,

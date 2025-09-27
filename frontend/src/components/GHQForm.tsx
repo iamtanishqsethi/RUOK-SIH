@@ -14,8 +14,8 @@ import { Progress } from '@/components/ui/progress';
 import { ChevronLeft, ChevronRight, User, FileText, Send, Heart } from 'lucide-react';
 import {InteractiveHoverButton} from "@/components/magicui/interactive-hover-button.tsx";
 import {useNavigate} from "react-router-dom";
+import GHQResults from './GHQResults';
 
-// Official GHQ-12 Questions
 const ghqQuestions = [
   {
     id: "q1",
@@ -148,7 +148,6 @@ const calculateGHQScore = (responses: Partial<GHQFormValues>) => {
   return { bimodalScore, likertScore, maxBimodalScore: 12, maxLikertScore: 36 };
 };
 
-// Question Card Component
 const QuestionCard: React.FC<{
   question: typeof ghqQuestions[0];
   questionNumber: number;
@@ -203,13 +202,16 @@ const QuestionCard: React.FC<{
   );
 };
 
-// Main Component
 const GHQForm: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const totalSteps = 14;
-  const [resultMessage, setResultMessage] = useState('');
-  const [isCompleted, setIsCompleted] = useState(false);
-  const navigate=useNavigate();
+  const navigate = useNavigate();
+  
+  const [showResults, setShowResults] = useState(false);
+  const [assessmentResults, setAssessmentResults] = useState<{
+    scores: { bimodalScore: number; likertScore: number; maxBimodalScore: number; maxLikertScore: number };
+    userInfo: { fullName: string; age: number; gender: string; maritalStatus: string; occupation?: string };
+  } | null>(null);
 
   const form = useForm<GHQFormValues>({
     resolver: joiResolver(ghqFormSchema),
@@ -242,31 +244,20 @@ const GHQForm: React.FC = () => {
   const onSubmit = async (values: GHQFormValues) => {
     const scores = calculateGHQScore(values);
 
-    const resultMessage = `
-🎉 GHQ-12 Assessment Completed Successfully!<br/><br/>
-
-📊 <strong>Your Mental Health Scores:</strong><br/>
-• Bimodal Score: ${scores.bimodalScore}/12<br/>
-• Likert Score: ${scores.likertScore}/36<br/><br/>
-
-📝 <strong>Clinical Interpretation:</strong><br/>
-• Bimodal scores ≥3 may indicate psychological distress<br/>
-• Likert scores ≥12 may indicate psychological distress<br/><br/>
-
-💡 <em>Note:</em> This is a screening tool only. For clinical concerns, please consult a healthcare professional.<br/><br/>
-
-Thank you for taking the time to complete this assessment.
-`;
-
-    setResultMessage(resultMessage);
-    setIsCompleted(true);
-    form.reset();
-    setCurrentStep(0);
+    const userInfo = {
+      fullName: values.fullName,
+      age: values.age,
+      gender: values.gender,
+      maritalStatus: values.maritalStatus,
+      occupation: values.occupation
+    };
+    
+    setAssessmentResults({ scores, userInfo });
+    setShowResults(true);
   };
 
   const canProceed = () => {
     if (currentStep === 0) {
-      // Check if required personal info fields are filled
       const { fullName, gender, maritalStatus } = watchedValues;
       return fullName && fullName.length >= 2 && gender && maritalStatus;
     }
@@ -396,7 +387,6 @@ Thank you for taking the time to complete this assessment.
       );
     }
 
-    // GHQ Questions (Steps 1-12)
     if (currentStep >= 1 && currentStep <= 12) {
       const questionIndex = currentStep - 1;
       const question = ghqQuestions[questionIndex];
@@ -429,7 +419,6 @@ Thank you for taking the time to complete this assessment.
       );
     }
 
-    // Final Step - Comments & Submit
     if (currentStep === 13) {
       return (
         <Card className="border-2 border-border shadow-lg bg-card">
@@ -489,24 +478,19 @@ Thank you for taking the time to complete this assessment.
 
   return (
     <div className="h-screen w-full bg-background flex flex-col overflow-hidden relative">
-      {/* Header */}
-      {isCompleted && <div
-          className="absolute z-20 bg-zinc-500/60 dark:bg-zinc-900/60 backdrop-blur-sm h-screen w-full flex flex-col items-center justify-center">
-        <Card
-            className="w-[20rem] md:w-[45rem] h-[38rem] bg-zinc-100 dark:bg-zinc-950 overflow-hidden border-3 flex flex-col items-center justify-center">
-          <h1 className="font-mynabali text-3xl md:text-5xl my-4 font-medium">
-            RuOk
-          </h1>
-          <p dangerouslySetInnerHTML={{ __html: resultMessage }}  className={'px-4'} />
+      {showResults && assessmentResults && (
+        <GHQResults
+          scores={assessmentResults.scores}
+          userInfo={assessmentResults.userInfo}
+          onClose={() => {
+            setShowResults(false);
+            setAssessmentResults(null);
+            form.reset();
+            setCurrentStep(0);
+          }}
+        />
+      )}
 
-          <InteractiveHoverButton
-              className="text-lg"
-              onClick={()=>navigate('/main/book')}
-          >
-            Book Session
-          </InteractiveHoverButton>
-        </Card>
-      </div>}
       <div className="bg-card border-b border-border flex-shrink-0">
         <div className="px-4 lg:px-6">
           <div className="flex justify-between items-center py-4">
@@ -525,7 +509,6 @@ Thank you for taking the time to complete this assessment.
         </div>
       </div>
 
-      {/* Main Content */}
       <div className="flex-1 overflow-y-auto">
         <div className="px-4 py-6">
           <div className="flex items-center justify-center min-h-full">
@@ -536,7 +519,6 @@ Thank you for taking the time to complete this assessment.
         </div>
       </div>
 
-      {/* Footer Navigation */}
       <div className="bg-card border-t border-border flex-shrink-0">
         <div className="px-4 lg:px-6 py-4">
           <div className="flex justify-between items-center">
@@ -553,12 +535,12 @@ Thank you for taking the time to complete this assessment.
 
             <div className="text-center">
               <div className="text-xs font-medium text-foreground">
-                {currentStep === 0}
+                {currentStep === 0 && "Personal Information"}
                 {currentStep >= 1 && currentStep <= 12 && `Question ${currentStep} of 12`}
                 {currentStep === 13 && "Final Step"}
               </div>
               <div className="text-xs text-muted-foreground mt-1">
-                {currentStep === 0}
+                {currentStep === 0 && "Basic details to begin"}
                 {currentStep >= 1 && currentStep <= 12 && "Mental health assessment"}
                 {currentStep === 13 && "Optional comments & submit"}
               </div>
