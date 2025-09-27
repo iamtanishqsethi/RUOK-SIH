@@ -20,6 +20,7 @@ import { Analytics } from '@vercel/analytics/react';
 import RedditClone from "@/components/Forum/RedditClone.tsx";
 import BookingPage from "./components/booking/BookingPage";
 import AdminDashboard from "@/components/Admin/Admin.tsx";
+import TherapistDashboard from "./components/TherapistDashboard";
 
 function App() {
   
@@ -84,7 +85,11 @@ function App() {
                         {
                             path:'book',
                             element:<ProtectedRoute><BookingPage/></ProtectedRoute>
-                        }
+                        },
+                        {
+                            path:'therapist',
+                            element:<ProtectedRoute><TherapistDashboard/></ProtectedRoute>
+                        },
 
                     ]
                 }

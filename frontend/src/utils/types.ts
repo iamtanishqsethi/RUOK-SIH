@@ -58,12 +58,13 @@ export interface TechniqueCard {
     src: string;
     afterSrc: string;
     category: Category;
-    steps: { text: string; image?: string }[];
+    steps: { text?: string; image?: string; videoUrl?: string;}[];
 }
 
 export interface Step {
-    text: string;
+    text?: string;
     image?: string;
+    videoUrl?: string;
 }
 
 export interface SlideStepperProps {
@@ -83,4 +84,22 @@ export interface ITherapist {
     avatar?: string | null; 
     specialization?: string | null;
     bio?: string | null;
+  }
+
+  export interface Patient {
+    name: string;
+    email: string;
+  }
+  
+ export interface Message {
+    id: number;
+    sender: 'patient' | 'therapist';
+    text: string;
+    timestamp: Date;
+    status: 'sent' | 'delivered' | 'read';
+  }
+  
+  export interface ChatState {
+    isOpen: boolean;
+    patient: Patient | null;
   }
