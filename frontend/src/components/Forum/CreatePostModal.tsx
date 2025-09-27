@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowLeft, User, Image, MapPin, Paperclip } from 'lucide-react';
-import {toast} from "sonner";
-
+import { toast } from "sonner";
 
 const CreatePostModal: React.FC<{
     isOpen: boolean;
@@ -10,12 +9,13 @@ const CreatePostModal: React.FC<{
 }> = ({ isOpen, onClose, onPost }) => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
-    const [selectedColor, setSelectedColor] = useState('bg-gradient-to-t from-red-900');
+    const [selectedColor, setSelectedColor] = useState('bg-gradient-to-t from-red-900 to-black/50');
     const [tags, setTags] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isCheckingContent, setIsCheckingContent] = useState(false);
 
     const illegalWords = [
+        // Original list
         'psycho','psychopath','psycho-path','crazy','stupid','idiot','loony','loonybin','nuts','nutcase',
         'dumb','fool','moron','imbecile','retard','retarded','lunatic','lunatics','deranged','insane','insanity',
         'mental','maniac','weirdo','weirdos','sicko','schizo','schizophrenic','nut-job','nut-job','loony-tunes',
@@ -37,31 +37,29 @@ const CreatePostModal: React.FC<{
 
         // Phrases that indicate severe harm intent
         'i cant take this anymore','i cant do this anymore','i want to end my life','i want to end it','no reason to live',
-        'there is no point','i might kill myself','i may kill myself','thinking of killing myself','thinking about suicide'
-    ];
+        'there is no point','i might kill myself','i may kill myself','thinking of killing myself','thinking about suicide',
 
+        // Added from research
+        'disturbed', 'confused', 'ill', 'psychotic', 'junkie', 'nutter', 'crazed', 'mad', 'unhinged', 'unstable',
+        'mental patient', 'asylum', 'commit suicide', 'committed suicide', 'suffering from', 'victim of', 'loony bin',
+        'deranged', 'insane asylum', 'basket case', 'off their rocker', 'not all there', 'touched in the head'
+    ];
 
     const colors = [
-        { name: 'Red', value: 'bg-gradient-to-t from-red-900', color: 'bg-red-500' },
-        { name: 'Blue', value: 'bg-gradient-to-t from-blue-900', color: 'bg-blue-500' },
-        { name: 'Yellow', value: 'bg-gradient-to-t from-yellow-900', color: 'bg-yellow-500' },
-        { name: 'Green', value: 'bg-gradient-to-t from-green-900', color: 'bg-green-500' }
+        { name: 'Red', value: 'bg-gradient-to-t from-red-700', color: 'bg-red-500' },
+        { name: 'Blue', value: 'bg-gradient-to-t from-blue-700 ', color: 'bg-blue-500' },
+        { name: 'Yellow', value: 'bg-gradient-to-t from-yellow-600 ', color: 'bg-yellow-500' },
+        { name: 'Green', value: 'bg-gradient-to-t from-green-700 ', color: 'bg-green-500' }
     ];
-
-    // const communityMembers = [
-    //   { name: 'Dr. Maninder Bhatinda', email: 'maninderbhatinda@gmail.com' },
-    //   { name: 'Dr. Sarah Johnson', email: 'sarah.johnson@gmail.com' },
-    //   { name: 'Dr. Alex Chen', email: 'alex.chen@gmail.com' },
-    //   { name: 'Dr. Maria Garcia', email: 'maria.garcia@gmail.com' },
-    //   { name: 'Dr. James Wilson', email: 'james.wilson@gmail.com' }
-    // ];
 
     const handlePost = async () => {
         if (title.trim() && content.trim() && !isSubmitting) {
             setIsCheckingContent(true);
             await new Promise(resolve => setTimeout(resolve, 1500));
 
-            const containsIllegalWords = illegalWords.some(word => title.toLowerCase().includes(word) || content.toLowerCase().includes(word));
+            const lowerTitle = title.toLowerCase();
+            const lowerContent = content.toLowerCase();
+            const containsIllegalWords = illegalWords.some(word => lowerTitle.includes(word) || lowerContent.includes(word));
 
             if (containsIllegalWords) {
                 toast.warning('Your post contains inappropriate language and cannot be submitted.');
@@ -80,7 +78,7 @@ const CreatePostModal: React.FC<{
             setTitle('');
             setContent('');
             setTags('');
-            setSelectedColor('bg-gradient-to-r from-red-900 to-red-700');
+            setSelectedColor('bg-gradient-to-t from-red-900 to-black/50');
             setIsSubmitting(false);
             setIsCheckingContent(false);
             onClose();
@@ -91,7 +89,7 @@ const CreatePostModal: React.FC<{
         setTitle('');
         setContent('');
         setTags('');
-        setSelectedColor('bg-gradient-to-r from-red-900 to-red-700');
+        setSelectedColor('bg-gradient-to-t from-red-900 to-black/50');
         onClose();
     };
 
@@ -99,11 +97,11 @@ const CreatePostModal: React.FC<{
 
     return (
         <div className="flex items-center justify-center p-4">
-            <div className={`${selectedColor} rounded-2xl w-full max-w-6xl h-auto max-h-[90vh] flex flex-col overflow-hidden border-2 border-gray-700`}>
+            <div className={`${selectedColor} rounded-2xl w-full max-w-6xl h-auto max-h-[90vh] flex flex-col overflow-hidden border-2 border-gray-700 shadow-2xl`}>
                 <div className="flex items-center justify-between p-6 border-b border-gray-700">
                     <button
                         onClick={onClose}
-                        className="flex items-center space-x-2 text-gray-400 hover:text-white transition-colors"
+                        className="flex items-center space-x-2 text-gray-400 hover:text-white transition-colors duration-200"
                     >
                         <ArrowLeft className="w-5 h-5" />
                     </button>
@@ -111,36 +109,36 @@ const CreatePostModal: React.FC<{
                     <div></div>
                 </div>
 
-                <div className="flex-1 flex flex-col p-6 space-y-4 overflow-y-auto">
-                    <div className="p-6 border-b border-gray-700">
-                        <div className="flex items-center justify-between">
-                            <div className="flex items-center space-x-3">
-                                <div className="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center">
-                                    <User className="w-6 h-6 text-white" />
-                                </div>
-                                <div>
-                                    <h3 className="font-semibold text-white">Sumit Singh Bisht</h3>
-                                    <p className="text-sm text-gray-400">sumitsinghbisht2020@gmail.com</p>
-                                </div>
+                <div className="p-6 border-b border-gray-700">
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-3">
+                            <div className="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center shadow-sm">
+                                <User className="w-6 h-6 text-white" />
                             </div>
-
-                            <div className="flex space-x-2">
-                                {colors.map((colorOption, index) => (
-                                    <button
-                                        key={index}
-                                        onClick={() => setSelectedColor(colorOption.value)}
-                                        className={`w-8 h-8 rounded-full ${colorOption.color} ${
-                                            selectedColor === colorOption.value ? 'ring-2 ring-white ring-offset-2 ring-offset-gray-900' : ''
-                                        } transition-all`}
-                                    />
-                                ))}
+                            <div>
+                                <h3 className="font-semibold text-white">Sumit Singh Bisht</h3>
+                                <p className="text-sm text-gray-400">sumitsinghbisht2020@gmail.com</p>
                             </div>
                         </div>
-                    </div>
 
+                        <div className="flex space-x-2">
+                            {colors.map((colorOption, index) => (
+                                <button
+                                    key={index}
+                                    onClick={() => setSelectedColor(colorOption.value)}
+                                    className={`w-8 h-8 rounded-full ${colorOption.color} ${
+                                        selectedColor === colorOption.value ? 'ring-2 ring-white ring-offset-2 ring-offset-gray-900' : ''
+                                    } transition-all duration-200 hover:scale-110`}
+                                />
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
+                <div className="flex-1 p-6 space-y-4 overflow-y-auto">
                     {isCheckingContent && (
-                        <div className="flex items-center justify-center p-2 bg-yellow-900/50 rounded-lg mb-4">
-                            <p className="text-yellow-300 text-sm">Checking for illegal words...</p>
+                        <div className="flex items-center justify-center p-2 bg-yellow-900/50 rounded-lg mb-4 animate-pulse">
+                            <p className="text-yellow-300 text-sm">Checking for inappropriate content...</p>
                         </div>
                     )}
                     <input
@@ -148,7 +146,7 @@ const CreatePostModal: React.FC<{
                         placeholder="Title"
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
-                        className="w-full border border-gray-700 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                        className="w-full  border border-gray-700 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
                         maxLength={200}
                     />
 
@@ -156,7 +154,7 @@ const CreatePostModal: React.FC<{
                         placeholder="What's on your mind?"
                         value={content}
                         onChange={(e) => setContent(e.target.value)}
-                        className="w-full h-48 border border-gray-700 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
+                        className="w-full h-48  border border-gray-700 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none transition-all duration-200"
                         maxLength={5000}
                     />
 
@@ -165,17 +163,17 @@ const CreatePostModal: React.FC<{
                         placeholder="Tags (comma separated)"
                         value={tags}
                         onChange={(e) => setTags(e.target.value)}
-                        className="w-full border border-gray-700 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                        className="w-full  border border-gray-700 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
                     />
 
                     <div className="flex items-center space-x-4">
-                        <button className="flex items-center justify-center w-10 h-10  hover:bg-gray-700 rounded-lg transition-colors">
+                        <button className="flex items-center justify-center w-10 h-10  hover:bg-gray-700 rounded-lg transition-colors duration-200">
                             <Image className="w-5 h-5 text-gray-400" />
                         </button>
-                        <button className="flex items-center justify-center w-10 h-10  hover:bg-gray-700 rounded-lg transition-colors">
+                        <button className="flex items-center justify-center w-10 h-10 hover:bg-gray-700 rounded-lg transition-colors duration-200">
                             <MapPin className="w-5 h-5 text-gray-400" />
                         </button>
-                        <button className="flex items-center justify-center w-10 h-10  hover:bg-gray-700 rounded-lg transition-colors">
+                        <button className="flex items-center justify-center w-10 h-10  hover:bg-gray-700 rounded-lg transition-colors duration-200">
                             <Paperclip className="w-5 h-5 text-gray-400" />
                         </button>
                     </div>
@@ -190,14 +188,14 @@ const CreatePostModal: React.FC<{
                 <div className="p-6 border-t border-gray-700 flex justify-end space-x-3">
                     <button
                         onClick={handleDiscard}
-                        className="px-6 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-full transition-colors"
+                        className="px-6 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-full transition-colors duration-200"
                         disabled={isSubmitting}
                     >
                         Discard
                     </button>
                     <button
                         onClick={handlePost}
-                        className="px-6 py-2 bg-white hover:bg-gray-100 text-black rounded-full transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="px-6 py-2 bg-white hover:bg-gray-100 text-black rounded-full transition-colors duration-200 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                         disabled={!title.trim() || !content.trim() || isSubmitting}
                     >
                         {isSubmitting ? 'Posting...' : 'Post'}
@@ -207,4 +205,5 @@ const CreatePostModal: React.FC<{
         </div>
     );
 };
+
 export default CreatePostModal;

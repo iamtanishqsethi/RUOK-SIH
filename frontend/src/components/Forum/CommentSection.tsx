@@ -13,10 +13,10 @@ interface Comment {
     replies: Comment[];
 }
 
-const CommentSection: React.FC<{
+export const CommentSection: React.FC<{
     comments: Comment[];
     onAddComment: (content: string, parentId?: string) => void;
-    onLikeComment: (commentId: string, isLiked: boolean) => void;
+    onLikeComment: (commentId: string) => void;
 }> = ({ comments, onAddComment, onLikeComment }) => {
     const [newComment, setNewComment] = useState('');
     const [replyingTo, setReplyingTo] = useState<string | null>(null);
@@ -68,7 +68,7 @@ const CommentSection: React.FC<{
     return (
         <div className="mt-6 space-y-4">
             <div className="flex space-x-3">
-                <div className="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center">
+                <div className="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center shadow-sm">
                     <User className="w-4 h-4 text-white" />
                 </div>
                 <div className="flex-1 flex space-x-2">
@@ -77,12 +77,12 @@ const CommentSection: React.FC<{
                         placeholder="Add a comment..."
                         value={newComment}
                         onChange={(e) => setNewComment(e.target.value)}
-                        className="flex-1 bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-purple-500"
+                        className="flex-1 bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-purple-500 transition-all duration-200"
                         onKeyPress={(e) => e.key === 'Enter' && handleSubmitComment()}
                     />
                     <button
                         onClick={handleSubmitComment}
-                        className="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-lg transition-colors"
+                        className="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-lg transition-colors duration-200"
                         disabled={!newComment.trim() || isSubmitting}
                     >
                         <Send className="w-4 h-4 text-white" />
@@ -93,32 +93,32 @@ const CommentSection: React.FC<{
             {comments.map((comment) => (
                 <div key={comment.id} className="space-y-3">
                     <div className="flex space-x-3">
-                        <div className="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center">
+                        <div className="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center shadow-sm">
                             <User className="w-4 h-4 text-white" />
                         </div>
                         <div className="flex-1">
-                            <div className="bg-gray-800 rounded-lg p-3">
+                            <div className=" rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow duration-200">
                                 <div className="flex items-center justify-between mb-2">
                                     <div>
                                         <span className="text-white text-sm font-medium">{comment.author}</span>
                                         <span className="text-gray-400 text-xs ml-2">{formatTimestamp(comment.timestamp)}</span>
                                     </div>
-                                    <button className="text-gray-400 hover:text-white">
+                                    <button className="text-gray-400 hover:text-white transition-colors duration-200">
                                         <MoreHorizontal className="w-4 h-4" />
                                     </button>
                                 </div>
                                 <p className="text-gray-300 text-sm">{comment.content}</p>
                                 <div className="flex items-center space-x-4 mt-2">
                                     <button
-                                        onClick={() => onLikeComment(comment.id, comment.isLiked)}
-                                        className="flex items-center space-x-1 text-gray-400 hover:text-red-400 transition-colors"
+                                        onClick={() => onLikeComment(comment.id)}
+                                        className="flex items-center space-x-1 text-gray-400 hover:text-red-400 transition-colors duration-200"
                                     >
                                         <Heart className={`w-4 h-4 ${comment.isLiked ? 'fill-red-500 text-red-500' : ''}`} />
                                         <span className="text-xs">{comment.likes}</span>
                                     </button>
                                     <button
                                         onClick={() => setReplyingTo(replyingTo === comment.id ? null : comment.id)}
-                                        className="flex items-center space-x-1 text-gray-400 hover:text-blue-400 transition-colors"
+                                        className="flex items-center space-x-1 text-gray-400 hover:text-blue-400 transition-colors duration-200"
                                     >
                                         <Reply className="w-4 h-4" />
                                         <span className="text-xs">Reply</span>
@@ -133,12 +133,12 @@ const CommentSection: React.FC<{
                                         placeholder="Write a reply..."
                                         value={replyContent}
                                         onChange={(e) => setReplyContent(e.target.value)}
-                                        className="flex-1 bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-purple-500"
+                                        className="flex-1  border border-gray-700 rounded-lg px-3 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-purple-500 transition-all duration-200"
                                         onKeyPress={(e) => e.key === 'Enter' && handleSubmitReply(comment.id)}
                                     />
                                     <button
                                         onClick={() => handleSubmitReply(comment.id)}
-                                        className="bg-purple-600 hover:bg-purple-700 px-3 py-2 rounded-lg transition-colors"
+                                        className="bg-purple-600 hover:bg-purple-700 px-3 py-2 rounded-lg transition-colors duration-200"
                                         disabled={!replyContent.trim() || isSubmitting}
                                     >
                                         <Send className="w-4 h-4 text-white" />
@@ -150,10 +150,10 @@ const CommentSection: React.FC<{
                                 <div className="ml-6 mt-3 space-y-2">
                                     {comment.replies.map((reply) => (
                                         <div key={reply.id} className="flex space-x-2">
-                                            <div className="w-6 h-6 bg-purple-600 rounded-full flex items-center justify-center">
+                                            <div className="w-6 h-6 bg-purple-600 rounded-full flex items-center justify-center shadow-sm">
                                                 <User className="w-3 h-3 text-white" />
                                             </div>
-                                            <div className="flex-1 bg-gray-800 rounded-lg p-2">
+                                            <div className="flex-1  rounded-lg p-2 shadow-sm hover:shadow-md transition-shadow duration-200">
                                                 <div className="flex items-center space-x-2 mb-1">
                                                     <span className="text-white text-xs font-medium">{reply.author}</span>
                                                     <span className="text-gray-400 text-xs">{formatTimestamp(reply.timestamp)}</span>
@@ -171,4 +171,5 @@ const CommentSection: React.FC<{
         </div>
     );
 };
+
 export default CommentSection;
