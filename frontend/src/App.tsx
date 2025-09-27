@@ -20,8 +20,9 @@ import { Analytics } from '@vercel/analytics/react';
 import RedditClone from "@/components/Forum/RedditClone.tsx";
 import BookingPage from "./components/booking/BookingPage";
 import AdminDashboard from "@/components/Admin/Admin.tsx";
+import CrisisManagement from "@/components/Admin/CrisisManagement.tsx";
+import TherapistSchedule from "@/components/Admin/TherapistSchedule.tsx";
 import Main from "@/components/Sage-Avatar/Main.tsx";
-
 
 function App() {
   
@@ -42,10 +43,6 @@ function App() {
                 {
                     path:'login',
                     element:<Login/>
-                },
-                {
-                    path:'admin',
-                    element:<AdminDashboard/>
                 }
                 ,{
                     path:"main",
@@ -87,6 +84,17 @@ function App() {
                         {
                             path:'book',
                             element:<ProtectedRoute><BookingPage/></ProtectedRoute>
+                        },
+                        {
+                            path:'admin',
+                            element:<AdminDashboard/>
+                        }
+                        ,{
+                            path:'crisis',
+                            element:<CrisisManagement/>
+                        },{
+                            path:'therapist-schedule',
+                            element:<TherapistSchedule/>
                         }
 
                     ]
