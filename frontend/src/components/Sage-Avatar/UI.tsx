@@ -128,7 +128,7 @@ export const UI = ({ hidden = false, ...props }: UIProps) => {
                             </div>
                         }
                         <input
-                    className={"file:text-foreground placeholder:text-muted-foreground selection:bg-primary " +
+                    className={"relative  file:text-foreground placeholder:text-muted-foreground selection:bg-primary " +
                         "selection:text-primary-foreground dark:bg-zinc-800/50 border-input flex h-9 w-full min-w-0 " +
                         "rounded-full border bg-transparent px-4 py-2 text-base shadow-xs transition-[color,box-shadow] " +
                         "outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium " +
