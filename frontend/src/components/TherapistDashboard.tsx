@@ -4,7 +4,7 @@ import { BentoGrid } from "../components/magicui/bento-grid";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState, useRef } from "react";
 import { Calendar } from "@/components/ui/calendar";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Card, CardContent} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { 
   ChevronLeft, 
@@ -20,6 +20,9 @@ import {
 } from "lucide-react";
 import WeeklyWeb from "@/components/Dashboard/WeeklyWeb";
 import WeeklyBox from "@/components/Dashboard/WeeklyBox";
+import ActivityBox from "@/components/Dashboard/ActivityBox.tsx";
+import PlaceBox from "@/components/Dashboard/PlaceBox.tsx";
+import PeopleBox from "@/components/Dashboard/PeopleBox.tsx";
 
 const mockChatData: { [key: string]: Message[] } = {
   "riya123@gmail.com": [
@@ -265,9 +268,9 @@ const TherapistDashboard = () => {
           <SessionDetailsBox />
           <WeeklyWeb />
           <WeeklyBox />
-          <ActivityTagsBox />
-          <PlaceTagsBox />
-          <PeopleTagsBox />
+          <ActivityBox/>
+          <PlaceBox/>
+          <PeopleBox/>
         </BentoGrid>
 
         <PatientChat
@@ -306,7 +309,7 @@ const ScheduleCalendarBox: React.FC<{ openChat: (patient: Patient) => void }> = 
               onSelect={setDate}
               month={currentMonth}
               onMonthChange={setCurrentMonth}
-              className="bg-transparent p-0"
+              className="bg-transparent p-0 w-full"
             />
             <Button className="mt-4 w-full bg-muted text-muted-foreground hover:bg-muted/80">
               Block further bookings on this day
@@ -357,7 +360,7 @@ const ScheduleCalendarBox: React.FC<{ openChat: (patient: Patient) => void }> = 
 
 const ChatBox: React.FC<{ openChat: (patient: Patient) => void }> = ({ openChat }) => {
   return (
-    <div className="group relative flex flex-col overflow-hidden rounded-xl col-span-1 sm:col-span-2 lg:col-start-5 lg:col-end-9 lg:row-start-1 lg:row-end-7 bg-background [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)] transform-gpu dark:bg-background dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset]">
+    <div className="group relative flex flex-col overflow-hidden rounded-xl col-span-1 sm:col-span-2 lg:col-start-5 lg:col-end-10 lg:row-start-1 lg:row-end-7 bg-background [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)] transform-gpu dark:bg-background dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset]">
       <div className="p-4 border-b border-border">
         <h3 className="font-semibold text-lg">Chat with</h3>
       </div>

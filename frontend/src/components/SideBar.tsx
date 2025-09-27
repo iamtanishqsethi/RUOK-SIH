@@ -124,7 +124,7 @@ export function SideBar() {
             },
             {
                 label: "Analytics",
-                to: "/main/analytics",
+                to: "/main/therapist",
                 icon: <Zap className="h-5 w-5 shrink-0 text-zinc-700 dark:text-zinc-200" />
             },
 
