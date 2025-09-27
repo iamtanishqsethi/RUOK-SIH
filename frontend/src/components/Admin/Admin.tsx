@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { TrendingUp, TrendingDown, Users, UserCheck, AlertTriangle, Calendar } from "lucide-react"
+import { TrendingUp, TrendingDown, UserCheck, AlertTriangle, Calendar } from "lucide-react"
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
 import {
     Card,
@@ -95,7 +95,7 @@ const SyncedTickerNumber = ({
     isActive: boolean
 }) => {
     const [count, setCount] = useState(0)
-    const [currentIndex, setCurrentIndex] = useState(0)
+
 
     useEffect(() => {
         if (!isActive) return
@@ -107,7 +107,7 @@ const SyncedTickerNumber = ({
         const timer = setInterval(() => {
             if (index < data.length) {
                 setCount(data[index][dataKey])
-                setCurrentIndex(index)
+
                 index++
             } else {
                 clearInterval(timer)
