@@ -429,58 +429,58 @@ const SessionDetailsBox = () => {
   );
 };
 
-const ActivityTagsBox = () => {
-  return (
-    <div className="group relative flex flex-col overflow-hidden rounded-xl col-span-1 lg:col-start-1 lg:col-end-4 lg:row-start-10 lg:row-end-13 bg-background [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)] transform-gpu dark:bg-background dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset]">
-      <div className="p-4 border-b border-border">
-        <h3 className="font-semibold">Activity Tags</h3>
-      </div>
-      <div className="flex-1 flex items-center justify-center">
-        <div className="text-center text-muted-foreground">
-          <FileText className="h-16 w-16 mx-auto mb-2 opacity-50" />
-          <p className="text-sm">No activity tags</p>
-        </div>
-      </div>
-    </div>
-  );
-};
+// const ActivityTagsBox = () => {
+//   return (
+//     <div className="group relative flex flex-col overflow-hidden rounded-xl col-span-1 lg:col-start-1 lg:col-end-4 lg:row-start-10 lg:row-end-13 bg-background [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)] transform-gpu dark:bg-background dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset]">
+//       <div className="p-4 border-b border-border">
+//         <h3 className="font-semibold">Activity Tags</h3>
+//       </div>
+//       <div className="flex-1 flex items-center justify-center">
+//         <div className="text-center text-muted-foreground">
+//           <FileText className="h-16 w-16 mx-auto mb-2 opacity-50" />
+//           <p className="text-sm">No activity tags</p>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
 
-const PlaceTagsBox = () => {
-  return (
-    <div className="group relative flex flex-col overflow-hidden rounded-xl col-span-1 lg:col-start-4 lg:col-end-7 lg:row-start-10 lg:row-end-13 bg-background [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)] transform-gpu dark:bg-background dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset]">
-      <div className="p-4 border-b border-border">
-        <h3 className="font-semibold">Place Tags</h3>
-      </div>
-      <div className="flex-1 flex items-center justify-center p-4">
-        <div className="w-full h-24 bg-red-500 rounded flex items-center justify-center">
-          <span className="text-white text-sm font-medium">hujdo place</span>
-        </div>
-      </div>
-    </div>
-  );
-};
+// const PlaceTagsBox = () => {
+//   return (
+//     <div className="group relative flex flex-col overflow-hidden rounded-xl col-span-1 lg:col-start-4 lg:col-end-7 lg:row-start-10 lg:row-end-13 bg-background [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)] transform-gpu dark:bg-background dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset]">
+//       <div className="p-4 border-b border-border">
+//         <h3 className="font-semibold">Place Tags</h3>
+//       </div>
+//       <div className="flex-1 flex items-center justify-center p-4">
+//         <div className="w-full h-24 bg-red-500 rounded flex items-center justify-center">
+//           <span className="text-white text-sm font-medium">hujdo place</span>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
 
-const PeopleTagsBox = () => {
-  return (
-    <div className="group relative flex flex-col overflow-hidden rounded-xl col-span-1 lg:col-start-7 lg:col-end-10 lg:row-start-10 lg:row-end-13 bg-background [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)] transform-gpu dark:bg-background dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset]">
-      <div className="p-4 border-b border-border">
-        <h3 className="font-semibold">People Tags</h3>
-      </div>
-      <div className="flex-1 flex items-center justify-center p-4">
-        <div className="w-full space-y-2">
-          <div className="h-8 bg-blue-500 rounded flex items-center justify-center">
-            <span className="text-white text-xs font-medium">Blue tag</span>
-          </div>
-          <div className="h-8 bg-green-500 rounded flex items-center justify-center">
-            <span className="text-white text-xs font-medium">Green tag</span>
-          </div>
-          <div className="h-8 bg-yellow-500 rounded flex items-center justify-center">
-            <span className="text-white text-xs font-medium">sumit</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
+// const PeopleTagsBox = () => {
+//   return (
+//     <div className="group relative flex flex-col overflow-hidden rounded-xl col-span-1 lg:col-start-7 lg:col-end-10 lg:row-start-10 lg:row-end-13 bg-background [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)] transform-gpu dark:bg-background dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset]">
+//       <div className="p-4 border-b border-border">
+//         <h3 className="font-semibold">People Tags</h3>
+//       </div>
+//       <div className="flex-1 flex items-center justify-center p-4">
+//         <div className="w-full space-y-2">
+//           <div className="h-8 bg-blue-500 rounded flex items-center justify-center">
+//             <span className="text-white text-xs font-medium">Blue tag</span>
+//           </div>
+//           <div className="h-8 bg-green-500 rounded flex items-center justify-center">
+//             <span className="text-white text-xs font-medium">Green tag</span>
+//           </div>
+//           <div className="h-8 bg-yellow-500 rounded flex items-center justify-center">
+//             <span className="text-white text-xs font-medium">sumit</span>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
 
 export default TherapistDashboard;

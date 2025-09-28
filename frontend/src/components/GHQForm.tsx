@@ -12,8 +12,6 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { ChevronLeft, ChevronRight, User, FileText, Send, Heart } from 'lucide-react';
-import {InteractiveHoverButton} from "@/components/magicui/interactive-hover-button.tsx";
-import {useNavigate} from "react-router-dom";
 import GHQResults from './GHQResults';
 
 const ghqQuestions = [
@@ -205,7 +203,7 @@ const QuestionCard: React.FC<{
 const GHQForm: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const totalSteps = 14;
-  const navigate = useNavigate();
+
   
   const [showResults, setShowResults] = useState(false);
   const [assessmentResults, setAssessmentResults] = useState<{
